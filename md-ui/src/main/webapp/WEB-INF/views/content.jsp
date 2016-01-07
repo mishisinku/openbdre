@@ -413,6 +413,11 @@
                                                 url: "users.page",
                                                 children: []
 					}, {
+                                                label: "Permissions",
+                                                collapse: "1",
+                                                url: "permission.page",
+                                                children: []
+                    },  {
                                                 label: "Sessions",
                                                 collapse: "1",
                                                 url: "sessions.page",

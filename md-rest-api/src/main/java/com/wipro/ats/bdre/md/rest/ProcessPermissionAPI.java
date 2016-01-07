@@ -1,4 +1,4 @@
-/*
+package com.wipro.ats.bdre.md.rest;/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,13 +14,10 @@
 
 import com.wipro.ats.bdre.md.api.base.MetadataAPIBase;
 import com.wipro.ats.bdre.md.beans.table.ProcessPermission;
-import com.wipro.ats.bdre.md.beans.table.Users;
 import com.wipro.ats.bdre.md.dao.ProcessDAO;
 import com.wipro.ats.bdre.md.dao.ProcessPermissionDAO;
 import com.wipro.ats.bdre.md.dao.UserRolesDAO;
 import com.wipro.ats.bdre.md.dao.UsersDAO;
-import com.wipro.ats.bdre.md.rest.RestWrapper;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -64,7 +61,7 @@ public class ProcessPermissionAPI extends MetadataAPIBase {
             com.wipro.ats.bdre.md.dao.jpa.ProcessPermission jpaProcessPermission = processPermissionDAO.get(processId);
             com.wipro.ats.bdre.md.beans.table.ProcessPermission processPermission = new ProcessPermission();
             if (jpaProcessPermission != null) {
-                processPermission.setProcessId(jpaProcessPermission.getProcess().getProcessId);
+                processPermission.setProcessId(jpaProcessPermission.getProcessId());
                 processPermission.setOwner(jpaProcessPermission.getUsers().getUsername());
                 processPermission.setRole(jpaProcessPermission.getUserRoles().getUserRoleId());
                 processPermission.setOwnerR(jpaProcessPermission.getOwnerR());
@@ -138,7 +135,7 @@ public class ProcessPermissionAPI extends MetadataAPIBase {
             List<ProcessPermission> processPermissionList = new ArrayList<ProcessPermission>();
             for (com.wipro.ats.bdre.md.dao.jpa.ProcessPermission jpaProcessPermission : jpaProcessPermissionList) {
                 com.wipro.ats.bdre.md.beans.table.ProcessPermission processPermission = new ProcessPermission();
-                processPermission.setProcessId(jpaProcessPermission.getProcess().getProcessId());
+                processPermission.setProcessId(jpaProcessPermission.getProcessId());
                 processPermission.setOwner(jpaProcessPermission.getUsers().getUsername());
                 processPermission.setRole(jpaProcessPermission.getUserRoles().getUserRoleId());
                 processPermission.setOwnerR(jpaProcessPermission.getOwnerR());
@@ -199,18 +196,37 @@ public class ProcessPermissionAPI extends MetadataAPIBase {
         }
         try {
             com.wipro.ats.bdre.md.dao.jpa.ProcessPermission jpaProcessPermission = new com.wipro.ats.bdre.md.dao.jpa.ProcessPermission();
+            jpaProcessPermission.setProcessId(processPermission.getProcessId());
             jpaProcessPermission.setProcess(processDAO.get(processPermission.getProcessId()));
             jpaProcessPermission.setUsers(usersDAO.get(processPermission.getOwner()));
             jpaProcessPermission.setUserRoles(userRolesDAO.get(processPermission.getRole()));
-            jpaProcessPermission.setOwnerR(processPermission.getOwnerR());
-            jpaProcessPermission.setOwnerW(processPermission.getOwnerW());
-            jpaProcessPermission.setOwnerX(processPermission.getOwnerX());
-            jpaProcessPermission.setGroupR(processPermission.getGroupR());
-            jpaProcessPermission.setGroupW(processPermission.getGroupW());
-            jpaProcessPermission.setGroupX(processPermission.getGroupX());
-            jpaProcessPermission.setOtherR(processPermission.getOtherR());
-            jpaProcessPermission.setOtherW(processPermission.getOtherW());
-            jpaProcessPermission.setOtherX(processPermission.getOtherX());
+            jpaProcessPermission.setOwnerR(true);
+            jpaProcessPermission.setOwnerW(true);
+            jpaProcessPermission.setOwnerX(true);
+            if (processPermission.getGroupR() == null)
+                jpaProcessPermission.setGroupR(false);
+            else
+                jpaProcessPermission.setGroupR(processPermission.getGroupR());
+            if (processPermission.getGroupW() == null)
+                jpaProcessPermission.setGroupW(false);
+            else
+                jpaProcessPermission.setGroupW(processPermission.getGroupW());
+            if (processPermission.getGroupX() == null)
+                jpaProcessPermission.setGroupX(false);
+            else
+                jpaProcessPermission.setGroupX(processPermission.getGroupX());
+            if (processPermission.getOtherR() == null)
+                jpaProcessPermission.setOtherR(false);
+            else
+                jpaProcessPermission.setOtherR(processPermission.getOtherR());
+            if (processPermission.getOtherW() == null)
+                jpaProcessPermission.setOtherW(false);
+            else
+                jpaProcessPermission.setOtherW(processPermission.getOtherW());
+            if (processPermission.getOtherX()== null)
+                jpaProcessPermission.setOtherX(false);
+            else
+                jpaProcessPermission.setOtherX(processPermission.getOtherX());
 
 
             processPermissionDAO.update(jpaProcessPermission);
@@ -256,18 +272,39 @@ public class ProcessPermissionAPI extends MetadataAPIBase {
         }
         try {
             com.wipro.ats.bdre.md.dao.jpa.ProcessPermission jpaProcessPermission = new com.wipro.ats.bdre.md.dao.jpa.ProcessPermission();
+            jpaProcessPermission.setProcessId(processPermission.getProcessId());
             jpaProcessPermission.setProcess(processDAO.get(processPermission.getProcessId()));
             jpaProcessPermission.setUsers(usersDAO.get(processPermission.getOwner()));
             jpaProcessPermission.setUserRoles(userRolesDAO.get(processPermission.getRole()));
-            jpaProcessPermission.setOwnerR(processPermission.getOwnerR());
-            jpaProcessPermission.setOwnerW(processPermission.getOwnerW());
-            jpaProcessPermission.setOwnerX(processPermission.getOwnerX());
+
+            jpaProcessPermission.setOwnerR(true);
+            jpaProcessPermission.setOwnerW(true);
+            jpaProcessPermission.setOwnerX(true);
+            if (processPermission.getGroupR() == null)
+                jpaProcessPermission.setGroupR(false);
+            else
             jpaProcessPermission.setGroupR(processPermission.getGroupR());
-            jpaProcessPermission.setGroupW(processPermission.getGroupW());
+            if (processPermission.getGroupW() == null)
+                jpaProcessPermission.setGroupW(false);
+            else
+                jpaProcessPermission.setGroupW(processPermission.getGroupW());
+            if (processPermission.getGroupX() == null)
+                jpaProcessPermission.setGroupX(false);
+            else
             jpaProcessPermission.setGroupX(processPermission.getGroupX());
+            if (processPermission.getOtherR() == null)
+                jpaProcessPermission.setOtherR(false);
+            else
             jpaProcessPermission.setOtherR(processPermission.getOtherR());
+            if (processPermission.getOtherW() == null)
+                jpaProcessPermission.setOtherW(false);
+            else
             jpaProcessPermission.setOtherW(processPermission.getOtherW());
+            if (processPermission.getOtherX()== null)
+                jpaProcessPermission.setOtherX(false);
+            else
             jpaProcessPermission.setOtherX(processPermission.getOtherX());
+
 
 
             processPermissionDAO.insert(jpaProcessPermission);
